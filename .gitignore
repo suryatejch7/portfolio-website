@@ -32,6 +32,10 @@
 /build/
 
 # Web related
+/web/assets/
+/web/*.js
+/web/*.js.map
+/web/flutter*.js
 
 # Symbolication related
 app.*.symbols
