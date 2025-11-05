@@ -31,7 +31,7 @@ jobs:
         run: flutter pub get
       
       - name: Build web
-        run: flutter build web --release --base-href="/portfolio/"
+        run: flutter build web --release --base-href="/portfolio-website/"
       
       - name: Verify build output
         run: |
