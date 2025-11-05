@@ -1,0 +1,55 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.35.6'
+      
+      - name: Clean Flutter cache
+        run: flutter clean
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Build web
+        run: flutter build web --release --base-href="/portfolio/"
+      
+      - name: Verify build output
+        run: |
+          echo "Checking carousel_items.dart content..."
+          grep "FULL STACK" lib/pages/home/components/carousel_items.dart || echo "Text not found!"
+          echo "Checking if Avatar3D is used..."
+          grep "Avatar3D" lib/pages/home/components/carousel_items.dart || echo "Avatar3D not found!"
+          echo "Checking built index.html..."
+          ls -lh build/web/index.html
+          echo "Checking if avatar.glb is in build..."
+          ls -lh build/web/assets/avatar.glb || echo "avatar.glb not in build!"
+      
+      - name: Disable Jekyll on GitHub Pages
+        run: touch build/web/.nojekyll
+      
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          force_orphan: true
