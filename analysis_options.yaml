@@ -1,0 +1,16 @@
+# Lint rules for Flutter
+linter:
+  rules:
+    # Error rules
+    avoid_print: false
+    avoid_unnecessary_containers: true
+    avoid_web_libraries_in_flutter: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_const_declarations: true
+    prefer_final_fields: true
+    prefer_final_locals: true
+    prefer_single_quotes: true
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    use_key_in_widget_constructors: true
